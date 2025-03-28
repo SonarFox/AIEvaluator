@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Python Code Analysis</title>
+    <style>
+        #directory-display {
+            border: 1px solid #ccc;
+            padding: 5px;
+            margin-bottom: 10px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enter Directory to Scan</h1>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="POST">
+        <input type="text" id="directory-input" name="directory" style="display: none;">
+        <div id="directory-display">Select a directory...</div>
+        <button type="button" onclick="selectDirectory()">Browse...</button>
+        <button type="submit">Scan</button>
+    </form>
+    <script>
+        function selectDirectory() {
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.webkitdirectory = true; // For Chrome/Edge
+            input.directory = true; // For Firefox
+            input.onchange = function(event) {
+                var directory = event.target.files[0].path; // Get the path
+                document.getElementById('directory-display').textContent = directory;
+                document.getElementById('directory-input').value = directory;
+            };
+            input.click();
+        }
+    </script>
+</body>
+</html>

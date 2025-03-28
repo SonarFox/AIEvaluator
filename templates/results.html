@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analysis Results</title>
+</head>
+<body>
+    <h1>Analysis Results for: {{directory}}</h1>
+    {% for file_path, file_results in results.items() %}
+    <h2>{{ file_path }}</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Line</th>
+                <th>Confidence</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in file_results %}
+            <tr>
+                <td>{{ result.line }}</td>
+                <td>{{ result.confidence }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+    <a href="/">Scan Another Directory</a>
+</body>
+</html>
