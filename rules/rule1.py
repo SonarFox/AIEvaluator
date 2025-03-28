@@ -1,27 +1,21 @@
+# rules/ai_comment_rule.py
+
 import re
 
-# Define the rule for code style and consistency
+def evaluate(code_line):
+    """
+    Evaluates a single line of code for AI generation indicators based on comments.
 
-def evaluate(line):
-    # Regular expression patterns for consistent indentation, spacing, and coding conventions
-    patterns = [
-        re.compile(r'^[ ]{4}'),  # 4 spaces indentation
-        re.compile(r';\s*'),  # Semicolon usage with different spacing
-        re.compile(r'\b([a-zA-Z_]+)\b'),  # Variable naming conventions
-    ]
+    Args:
+        code_line: A string representing a single line of code.
 
-    consistency_threshold = 2  # Number of patterns to indicate high consistency
-    match_count = 0
+    Returns:
+        A confidence score (float) between 0.0 and 100.0.
+    """
 
-    for pattern in patterns:
-        if pattern.search(line):
-            match_count += 1
-
-    # Calculate confidence score based on matches
-    confidence = 0.0
-    if match_count >= consistency_threshold:
-        confidence = 10.0 + (match_count - consistency_threshold)
+    if re.search(r"#\s*generated\s*by\s*ai", code_line, re.IGNORECASE) or \
+       re.search(r"//\s*generated\s*by\s*ai", code_line, re.IGNORECASE) or \
+       re.search(r"/\*\s*generated\s*by\s*ai\s*\*/", code_line, re.IGNORECASE):
+        return 75.0  # 75% confidence if explicitly stated
     else:
-        confidence = match_count
-
-    return confidence
+        return 0.0
